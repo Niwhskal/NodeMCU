@@ -1,0 +1,64 @@
+ifunction doGet(e) {
+Logger.log( JSON.stringify(e) );
+var result = 'Ok';
+if (e.parameter == 'undefined') {
+result = 'No Parameters';
+}
+else {
+var sheet_id = '1ALVL4i1Apeu7G-KjBcEU8ILb-OIPgPbHDTb81nFs0pA'; // Spreadsheet ID
+var sheet = SpreadsheetApp.openById(sheet_id).getActiveSheet();
+//var newRow = 1;
+//var rowData = [];
+
+var machinerowmap = {1: "B2", 2: "D2", 3: "F2", 4: "H2"};
+//var graphloggingmap = {"1": "B3:B5", "2": "D3:D5", "3": "F3:F5", "4": "H3:H5"}
+var colormap = {Running: '#f76f57', NotRunning: '#8bde7c'};
+var values_list = {};
+//var Curr_Date = new Date();
+//rowData[0] = Curr_Date; // Date in column A
+//var Curr_Time = Utilities.formatDate(Curr_Date, "Europe/", 'HH:mm:ss');
+//rowData[1] = Curr_Time; // Time in column B
+for (var param in e.parameter) {
+  values_list[param] = e.parameter[param];}
+
+
+//Logger.log('In for loop, param=' + param);
+//var value = stripQuotes(e.parameter[param]);
+//Logger.log(param + ':' + e.parameter[param]);
+
+var range = sheet.getRange(machinerowmap[values_list['machineid']])
+range.setBackground(colormap[values_list['status']])
+
+//var grRange = sheet.getRange(graphloggingmap[values_list['machineid']])
+result = 'Changed color'
+//rowData[]
+
+
+// switch (param) {
+// case 'machineid':
+// var range = sheet.getRange(machinerowmap[value])
+// range.setBackground(); // Temperature in column C
+// result = 'x value Written on column C';
+// break;
+// case 'y':
+// rowData[3] = value; // Humidity in column D
+// result += ' y value Written on column D';
+// break;
+// case 'z':
+// rowData[4] = value; // Temperature in column C
+// result = 'z value Written on column C';
+// break;
+// default:
+// result = "unsupported parameter";
+// }
+// }
+// Logger.log(JSON.stringify(rowData));
+// var newRange = sheet.getRange(newRow, 1, 1, rowData.length);
+// newRange.setValues([rowData]);
+// }
+return ContentService.createTextOutput(values_list['machineid']);
+}
+}
+function stripQuotes( value ) {
+return value.replace(/^["']|['"]$/g, "");
+}
